@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>Restaurant View</title>
+	<link rel="stylesheet" href="css/mystyles.css">
+	<script type="text/javascript" src="javascript/main.js"></script>
+	<script type="text/javascript" src="javascript/angular.min.js"></script>
+	<script type="text/javascript" src="javascript/angular-route.js"></script>
+</head>
+<body ng-app="demo-alejandra" ng-controller="control">
+<!-- Tiene que coincidir "demo-alejandra" con el atributo ng-app (1) -->
+
+<!-- enlaces a las vistas que se mostraran en ng-view (2) -->
+<ul>
+<li><a href="#!/">Main</a></li>  
+<li><a href="#!search">Search</a></li>  
+<li><a href="#!menu">Menu</a></li> 
+</ul>
+<h1>Restaurant View</h1>
+<!-- <p><a href="#4" onclick="TestXHR(4);">Repeat Demo</a></p> -->
+
+<div ng-view></div><!-- <div class="ng-view"></div> -->
+
+<!-- <button onclick="TestXHR(0);">Logout</button> -->
+<div id="logout">
+	<form method="GET" action="logout">
+		<p><input type="submit" name="submit" value="Logout"/></p>
+	</form>
+</div>
+
+<script>
+/* Tiene que coincidir "demo-alejandra" con el atributo ng-app (1) */
+var app=angular.module("demo-alejandra", ["ngRoute"]);
+app.controller('control',
+	function($scope, $http) /* (2) */
+	{
+		$http.get("restaurant?op=searchEnterprise").then(
+			function(response)
+			{
+				//alert("ok4: "+response.status+"\n"+JSON.stringify(response.data));
+				if (response.data.error=="invalidSession")
+				{
+				
+					Logout();
+				}
+				else
+				{
+					$scope.datos=response.data.results;
+				}
+			},
+			function(response)
+			{
+				alert("Error: "+response.status);
+			}
+		);
+	}
+);
+app.config(function($routeProvider)
+{
+	/* aqui se declaran las vistas y las URL de las mismas (2) */
+	$routeProvider
+	.when("/", {
+		templateUrl: "angular/mainRestaurant.html"
+	})
+	.when("/search", {
+		templateUrl: "angular/searchEnterprise.html"
+	})
+	.when("/menu", {
+		templateUrl: "angular/menu.html"
+	});
+});
+</script>
+
+</body>
+</html>

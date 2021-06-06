@@ -1,0 +1,16 @@
+<h2>Search Enterprise</h2>
+
+<form name="formulario">
+<p>Search by name: <input name="entrada" type="text" ng-model="busqueda"/></p>
+</form>
+<table>
+<!-- <table ng-show="formulario.entrada.$touched"> -->
+	<tr><th>Name</th><th>CIF</th><th>Address</th><th>Phone</th><th>Subscribe</th></tr>
+	<tr ng-repeat="x in datos | orderBy: 'name' | filter: {'name': busqueda}">
+		<td>{{ x.name }}</td>
+		<td>{{ x.cif }}</td>
+		<td>{{ x.address }}</td>
+		<td>{{ x.phone }}</td>
+		<td><button onclick="alert('Subscription done.');">Subscribe</button></td>
+	</tr>
+</table>
